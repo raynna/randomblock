@@ -40,11 +40,11 @@ public class Config {
             SPAWN_ITEM_TIMER = builder.translation("Items/Second: ").comment("How frequent should new item spawn? In Seconds").comment("Default: 600").defineInRange("spawn_item_timer", 600, 1, Integer.MAX_VALUE);
 
             SPAWN_BLOCK_MODE = builder.translation("Spawn Block Mode: ")
-                    .comment("Determine if blocks should spawn for all players, or one per world, or shouldn't be spawned at all, Valid valuse are: ALL_PLAYERS, ONE_IN_WORLD, OFF")
+                    .comment("Determine if blocks should spawn for all players, or one per world, or shouldn't be spawned at all, Valid values are: ALL_PLAYERS, ONE_IN_WORLD, OFF")
                     .defineEnum("spawn_block_mode", SpawnBlockMode.ONE_IN_WORLD);
 
             SPAWN_ITEM_MODE = builder.translation("Spawn Item Mode: ")
-                    .comment("Determine if items should spawn for all players, or one per world, or shouldn't be spawned at all, Valid valuse are: ALL_PLAYERS, ONE_IN_WORLD, OFF")
+                    .comment("Determine if items should spawn for all players, or one per world, or shouldn't be spawned at all, Valid values are: ALL_PLAYERS, ONE_IN_WORLD, OFF")
                     .defineEnum("spawn_item_mode", SpawnItemMode.ALL_PLAYERS);
             SPEC = builder.build();
         }
@@ -57,9 +57,16 @@ public class Config {
 
         public static final ModConfigSpec.IntValue CLIENT_CONFIG_VERSION;
 
+        public static ModConfigSpec.EnumValue<Client.GuiMode> SHOW_GUI;
+        public enum GuiMode { SHOW, HIDE }
+
         static {
             ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
             CLIENT_CONFIG_VERSION = builder.translation("Client Config Version: ").comment("DO NOT CHANGE. Used for tracking config updates.").defineInRange("config_version", CLIENT_VERSION, 1, Integer.MAX_VALUE);
+            SHOW_GUI = builder.translation("Show Overlay: ")
+                    .comment("Determine if you want to see timers for next block and item spawns, Valid values are: SHOW, HIDE")
+                    .comment("Default: SHOW")
+                    .defineEnum("show_gui", Client.GuiMode.SHOW);
             SPEC = builder.build();
         }
     }
