@@ -134,14 +134,12 @@ public class SpawnRandomBlock {
     }
 
     private static void handleSingleBlockSpawn(ServerLevel level, Block block, BlockState state) {
-        BlockPos spawnPos = level.players().stream().findFirst().map(Entity::blockPosition).orElse(DEFAULT_POS);
-
         if (lastPlacedBlock != null && !level.isEmptyBlock(lastPlacedBlock.pos) && level.getBlockState(lastPlacedBlock.pos).getBlock() == lastPlacedBlock.block) {
             level.setBlock(lastPlacedBlock.pos, Blocks.AIR.defaultBlockState(), 3);
         }
 
-        level.setBlock(spawnPos, state, 3);
-        lastPlacedBlock = new PlacedBlock(spawnPos, block);
+        level.setBlock(DEFAULT_POS, state, 3);
+        lastPlacedBlock = new PlacedBlock(DEFAULT_POS, block);
 
         broadcastMessage(level, "§6A " + block.getName().getString() + " has appeared at spawn!");
     }
@@ -166,10 +164,8 @@ public class SpawnRandomBlock {
     }
 
     private static void handleSingleItemSpawn(ServerLevel level, Item item, ItemStack stack) {
-        BlockPos spawnPos = level.players().stream().findFirst().map(Entity::blockPosition).orElse(DEFAULT_POS);
-
         if (lastItemEntity == null || !lastItemEntity.isAlive()) {
-            ItemEntity itemEntity = new ItemEntity(level, spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5, stack);
+            ItemEntity itemEntity = new ItemEntity(level, DEFAULT_POS.getX() + 0.5, DEFAULT_POS.getY(), DEFAULT_POS.getZ() + 0.5, stack);
             level.addFreshEntity(itemEntity);
             lastItemEntity = itemEntity;
 
