@@ -5,6 +5,7 @@ import com.raynna.randomblock.events.SpawnRandomBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -12,16 +13,23 @@ import net.neoforged.api.distmarker.OnlyIn;
 @OnlyIn(Dist.CLIENT)
 public class TimerGui {
 
+    public static long gameTime = 0L;  // Store the game time from the server
+
+    public static void setTime(long newGameTime) {
+        gameTime = newGameTime;
+    }
+
     public static void show(GuiGraphics graphics) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.level == null || mc.options.hideGui) return;
         if (Config.Client.SHOW_GUI.get() == Config.Client.GuiMode.HIDE) return;
 
-        long currentTime = mc.level.getGameTime();
+        long currentTime = gameTime;
 
         long blockInterval = Config.Server.SPAWN_BLOCK_TIMER.get() * 20L;
         long timeSinceLastBlock = currentTime - SpawnRandomBlock.getLastBlockSpawnTime();
         long blockRemaining = Mth.clamp(blockInterval - timeSinceLastBlock, 0, blockInterval) / 20;
+        System.out.println("blockRemaining: " + blockRemaining + ", timeSinceLastBlock: " + timeSinceLastBlock + ", blockInterval: " + blockInterval);
 
         long itemInterval = Config.Server.SPAWN_ITEM_TIMER.get() * 20L;
         long timeSinceLastItem = currentTime - SpawnRandomBlock.getLastItemSpawnTime();
@@ -62,42 +70,45 @@ public class TimerGui {
         public static int[] getPosition(Config.Client.GuiPosition position, int screenWidth, int screenHeight, int overlayWidth, int overlayHeight) {
             int x = 0, y = 0;
 
+            int xPadding = Config.Client.X_PADDING.get();
+            int yPadding = Config.Client.Y_PADDING.get();
+
             switch (position) {
                 case TOP_LEFT -> {
-                    x = Config.Client.X_PADDING.get();
-                    y = Config.Client.Y_PADDING.get();
+                    x = xPadding;
+                    y = yPadding;
                 }
                 case TOP_CENTER -> {
-                    x = (screenWidth - overlayWidth) / 2;
-                    y = Config.Client.Y_PADDING.get();
+                    x = (screenWidth - overlayWidth) / 2 + xPadding;
+                    y = yPadding;
                 }
                 case TOP_RIGHT -> {
-                    x = screenWidth - overlayWidth - Config.Client.X_PADDING.get();
-                    y = Config.Client.Y_PADDING.get();
+                    x = screenWidth - overlayWidth - xPadding;
+                    y = yPadding;
                 }
                 case CENTER_LEFT -> {
-                    x = Config.Client.X_PADDING.get();
-                    y = (screenHeight - overlayHeight) / 2;
+                    x = xPadding;
+                    y = (screenHeight - overlayHeight) / 2 + yPadding;
                 }
                 case CENTER -> {
-                    x = (screenWidth - overlayWidth) / 2;
-                    y = (screenHeight - overlayHeight) / 2;
+                    x = (screenWidth - overlayWidth) / 2 + xPadding;
+                    y = (screenHeight - overlayHeight) / 2 + yPadding;
                 }
                 case CENTER_RIGHT -> {
-                    x = screenWidth - overlayWidth - Config.Client.X_PADDING.get();
-                    y = (screenHeight - overlayHeight) / 2;
+                    x = screenWidth - overlayWidth - xPadding;
+                    y = (screenHeight - overlayHeight) / 2 + yPadding;
                 }
                 case BOTTOM_LEFT -> {
-                    x = Config.Client.X_PADDING.get();
-                    y = screenHeight - overlayHeight - Config.Client.Y_PADDING.get();
+                    x = xPadding;
+                    y = screenHeight - overlayHeight - yPadding;
                 }
                 case BOTTOM_CENTER -> {
-                    x = (screenWidth - overlayWidth) / 2;
-                    y = screenHeight - overlayHeight - Config.Client.Y_PADDING.get();
+                    x = (screenWidth - overlayWidth) / 2 + xPadding;
+                    y = screenHeight - overlayHeight - yPadding;
                 }
                 case BOTTOM_RIGHT -> {
-                    x = screenWidth - overlayWidth - Config.Client.X_PADDING.get();
-                    y = screenHeight - overlayHeight - Config.Client.Y_PADDING.get();
+                    x = screenWidth - overlayWidth - xPadding;
+                    y = screenHeight - overlayHeight - yPadding;
                 }
             }
 

@@ -1,6 +1,7 @@
 package com.raynna.randomblock.events;
 
 import com.raynna.randomblock.Config;
+import com.raynna.randomblock.network.TimePacket.TimePacketSender;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -37,6 +38,12 @@ public class SpawnRandomBlock {
     private static void onLevelTick(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
         if (serverLevel.players().isEmpty()) return;
+
+        long currentGameTime = serverLevel.getGameTime();
+        for (ServerPlayer player : serverLevel.players()) {
+            if (player == null) continue;
+            TimePacketSender.send(player, currentGameTime);
+        }
 
         if (Config.Server.SPAWN_BLOCK_MODE.get() != Config.Server.SpawnBlockMode.OFF) {
             checkAndSpawnBlock(serverLevel);
@@ -135,9 +142,7 @@ public class SpawnRandomBlock {
     private static void handleSingleBlockSpawn(ServerLevel level, Block block, BlockState state) {
         BlockPos spawnPos = level.players().stream().findFirst().map(Entity::blockPosition).orElse(DEFAULT_POS);
 
-        if (lastPlacedBlock != null &&
-                !level.isEmptyBlock(lastPlacedBlock.pos) &&
-                level.getBlockState(lastPlacedBlock.pos).getBlock() == lastPlacedBlock.block) {
+        if (lastPlacedBlock != null && !level.isEmptyBlock(lastPlacedBlock.pos) && level.getBlockState(lastPlacedBlock.pos).getBlock() == lastPlacedBlock.block) {
             level.setBlock(lastPlacedBlock.pos, Blocks.AIR.defaultBlockState(), 3);
         }
 
@@ -161,8 +166,7 @@ public class SpawnRandomBlock {
             if (spawnPos != null) {
                 level.setBlock(spawnPos, state, 3);
                 placedBlocks.put(player, new PlacedBlock(spawnPos, randomBlock));
-                player.sendSystemMessage(Component.literal("§6A " + randomBlock.getName().getString() +
-                        " has appeared near you."));
+                player.sendSystemMessage(Component.literal("§6A " + randomBlock.getName().getString() + " has appeared near you."));
             }
         }
     }
@@ -186,33 +190,20 @@ public class SpawnRandomBlock {
             BlockPos spawnPos = findSafeSpawnPosition(level, player.blockPosition());
 
             if (spawnPos != null) {
-                ItemEntity itemEntity = new ItemEntity(level,
-                        spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, stack);
+                ItemEntity itemEntity = new ItemEntity(level, spawnPos.getX() + 0.5, spawnPos.getY() + 0.5, spawnPos.getZ() + 0.5, stack);
                 level.addFreshEntity(itemEntity);
 
-                player.sendSystemMessage(Component.literal("§aA mysterious " +
-                        randomItem.getName(stack).getString() + " has appeared near you!"));
+                player.sendSystemMessage(Component.literal("§aA mysterious " + randomItem.getName(stack).getString() + " has appeared near you!"));
             }
         }
     }
 
     private static List<Block> getValidBlocks(Level level) {
-        return BuiltInRegistries.BLOCK.stream()
-                .filter(block -> block.defaultBlockState().canOcclude())
-                .filter(block -> !block.defaultBlockState().getCollisionShape(level, BlockPos.ZERO).isEmpty())
-                .filter(block -> !block.defaultBlockState().isAir())
-                .filter(block -> block.defaultBlockState().getFluidState().isEmpty())
-                .toList();
+        return BuiltInRegistries.BLOCK.stream().filter(block -> block.defaultBlockState().canOcclude()).filter(block -> !block.defaultBlockState().getCollisionShape(level, BlockPos.ZERO).isEmpty()).filter(block -> !block.defaultBlockState().isAir()).filter(block -> block.defaultBlockState().getFluidState().isEmpty()).toList();
     }
 
     private static List<Item> getValidItems() {
-        return BuiltInRegistries.ITEM.stream()
-                .filter(item -> !(item instanceof ArmorItem || item instanceof ElytraItem ||
-                        item instanceof ShieldItem || item instanceof TieredItem ||
-                        item instanceof BowItem || item instanceof CrossbowItem ||
-                        item instanceof FishingRodItem ||
-                        item instanceof ProjectileItem || item instanceof BlockItem))
-                .toList();
+        return BuiltInRegistries.ITEM.stream().filter(item -> !(item instanceof ArmorItem || item instanceof ElytraItem || item instanceof ShieldItem || item instanceof TieredItem || item instanceof BowItem || item instanceof CrossbowItem || item instanceof FishingRodItem || item instanceof ProjectileItem || item instanceof BlockItem)).toList();
     }
 
     private static BlockPos findSafeSpawnPosition(Level level, BlockPos center) {
@@ -236,7 +227,8 @@ public class SpawnRandomBlock {
         }
     }
 
-    private record PlacedBlock(BlockPos pos, Block block) {}
+    private record PlacedBlock(BlockPos pos, Block block) {
+    }
 
     public static long getLastBlockSpawnTime() {
         return lastBlockSpawnTime;
