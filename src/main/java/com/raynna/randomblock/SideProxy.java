@@ -1,5 +1,6 @@
 package com.raynna.randomblock;
 
+import com.raynna.randomblock.events.RenderEvent;
 import com.raynna.randomblock.events.SpawnRandomBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
@@ -74,6 +75,7 @@ class SideProxy implements IProxy {
         Client(IEventBus modEventBus, ModContainer container) {
             super(modEventBus);
             container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
+            RenderEvent.register();
         }
 
         @Nullable

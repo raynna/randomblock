@@ -223,6 +223,14 @@ public class SpawnRandomBlock {
         }
     }
 
+    public static long getLastBlockSpawnTime() {
+        return lastBlockSpawnTime;
+    }
+
+    public static long getLastItemSpawnTime() {
+        return lastItemSpawnTime;
+    }
+
     public static void register() {
         NeoForge.EVENT_BUS.register(SpawnRandomBlock.class);
     }
