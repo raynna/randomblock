@@ -1,25 +1,37 @@
+Raynna's Random Block
 
-Installation information
-=======
+A Skyblock Twist of Endless Possibilities
 
-This template repository can be directly cloned to get you started with a new
-mod. Simply create a new repository cloned from this one, by following the
-instructions provided by [GitHub](https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-repository-from-a-template).
+Raynna's Random Block transforms your Skyblock world into a chaotic and exciting adventure where anything can happen—one block (or item) at a time!
 
-Once you have your clone, simply open the repository in the IDE of your choice. The usual recommendation for an IDE is either IntelliJ IDEA or Eclipse.
+This mod is only required on Server
 
-If at any point you are missing libraries in your IDE, or you've run into problems you can
-run `gradlew --refresh-dependencies` to refresh the local cache. `gradlew clean` to reset everything 
-{this does not affect your code} and then start the process again.
+At the heart of the mod is a simple yet powerful mechanic:
 
-Mapping Names:
-============
-By default, the MDK is configured to use the official mapping names from Mojang for methods and fields 
-in the Minecraft codebase. These names are covered by a specific license. All modders should be aware of this
-license. For the latest license text, refer to the mapping file itself, or the reference copy here:
-https://github.com/NeoForged/NeoForm/blob/main/Mojang.md
+🔹 Random blocks or items spawn at the world spawn or directly on players
 
-Additional Resources: 
-==========
-Community Documentation: https://docs.neoforged.net/  
-NeoForged Discord: https://discord.neoforged.net/
+🔹 Supports blocks, items, or both, chosen from all registered content (even modded!)
+🔹 Fully configurable timers, spawn behavior, and spawn locations
+
+🔹 Perfect for Skyblock, OneBlock, or challenge-based gameplay
+
+Whether you're testing your luck, surviving on whatever you’re given, or crafting your own chaotic game mode—Raynna's Random Block makes every playthrough unique.
+
+🔧 Configuration Highlights:
+
+Toggle block or item spawning independently
+
+Set randomization intervals (seconds, minutes, ticks, etc.)
+
+Choose between world spawn, player location, or both
+
+Filter or whitelist/blacklist block and item types (coming soon)
+
+Feel free to contact me on either github, curseforge or Discord
+
+
+
+Github - Raynna
+Discord Server
+My Discord
+
