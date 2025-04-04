@@ -48,7 +48,10 @@ public class SpawnRandomBlock {
         long currentTime = level.getGameTime();
         long spawnInterval = Config.Server.SPAWN_BLOCK_TIMER.get() * 20L;
         long timeSinceLastSpawn = currentTime - lastBlockSpawnTime;
-
+        if (lastBlockSpawnTime == 0L) {
+            lastBlockSpawnTime = currentTime;
+            return;
+        }
         if (timeSinceLastSpawn < spawnInterval) {
             logTimeRemaining(spawnInterval - timeSinceLastSpawn);
             return;
@@ -61,7 +64,10 @@ public class SpawnRandomBlock {
         long currentTime = level.getGameTime();
         long spawnInterval = Config.Server.SPAWN_ITEM_TIMER.get() * 20L;
         long timeSinceLastSpawn = currentTime - lastItemSpawnTime;
-
+        if (lastItemSpawnTime == 0L) {
+            lastItemSpawnTime = currentTime;
+            return;
+        }
         if (timeSinceLastSpawn < spawnInterval) {
             logTimeRemainingItem(spawnInterval - timeSinceLastSpawn);
             return;
