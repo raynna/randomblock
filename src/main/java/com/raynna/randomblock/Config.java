@@ -87,8 +87,8 @@ public class Config {
                     .comment("Where should the timer UI appear on the screen?")
                     .comment("Options: TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER")
                     .defineEnum("gui_position", GuiPosition.BOTTOM_CENTER);
-            X_PADDING = builder.translation("Overlay X Adjustments: ").comment("Fine adjust the X position for the overlay").comment("Default: 10").defineInRange("x_adjustment", 10, 1, Integer.MAX_VALUE);
-            Y_PADDING = builder.translation("Overlay Y Adjustments: ").comment("Fine adjust the Y position for the overlay").comment("Default: 10").defineInRange("y_adjustment", 10, 1, Integer.MAX_VALUE);
+            X_PADDING = builder.translation("Overlay X Adjustments: ").comment("Fine adjust the X position for the overlay").comment("Default: 10").defineInRange("x_adjustment", 10, Integer.MIN_VALUE, Integer.MAX_VALUE);
+            Y_PADDING = builder.translation("Overlay Y Adjustments: ").comment("Fine adjust the Y position for the overlay").comment("Default: 10").defineInRange("y_adjustment", 10, Integer.MIN_VALUE, Integer.MAX_VALUE);
 
             SPEC = builder.build();
         }
