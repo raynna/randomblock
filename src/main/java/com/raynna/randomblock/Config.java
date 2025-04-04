@@ -37,7 +37,7 @@ public class Config {
             ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
             SERVER_CONFIG_VERSION = builder.translation("Server Config Version: ").comment("DO NOT CHANGE. Used for tracking config updates.").defineInRange("config_version", SERVER_VERSION, 1, Integer.MAX_VALUE);
             SPAWN_BLOCK_TIMER = builder.translation("Blocks/Second: ").comment("How frequent should new block spawn? In Seconds").comment("Default: 60").defineInRange("spawn_block_timer", 60, 1, Integer.MAX_VALUE);
-            SPAWN_ITEM_TIMER = builder.translation("Items/Second: ").comment("How frequent should new item spawn? In Seconds").comment("Default: 120").defineInRange("spawn_item_timer", 120, 1, Integer.MAX_VALUE);
+            SPAWN_ITEM_TIMER = builder.translation("Items/Second: ").comment("How frequent should new item spawn? In Seconds").comment("Default: 600").defineInRange("spawn_item_timer", 600, 1, Integer.MAX_VALUE);
 
             SPAWN_BLOCK_MODE = builder.translation("Spawn Block Mode: ")
                     .comment("Determine if blocks should spawn for all players, or one per world, or shouldn't be spawned at all, Valid valuse are: ALL_PLAYERS, ONE_IN_WORLD, OFF")

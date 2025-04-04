@@ -19,7 +19,6 @@ import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class SpawnRandomBlock {
 
@@ -36,6 +35,7 @@ public class SpawnRandomBlock {
     @SubscribeEvent
     private static void onLevelTick(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
+            if (event.getLevel().players().isEmpty()) return;
         if (Config.Server.SPAWN_BLOCK_MODE.get() != Config.Server.SpawnBlockMode.OFF) {
             checkAndSpawnBlock(serverLevel);
         }
@@ -90,12 +90,10 @@ public class SpawnRandomBlock {
 
     private static void logTimeRemainingItem(long ticksRemaining) {
         long secondsRemaining = Math.max(ticksRemaining / 20, 0);
-        System.out.println("Time till next item spawn: " + secondsRemaining + " seconds");
     }
 
     private static void logTimeRemaining(long ticksRemaining) {
         long secondsRemaining = Math.max(ticksRemaining / 20, 0);
-        System.out.println("Time till next block spawn: " + secondsRemaining + " seconds");
     }
 
     private static void spawnNewBlock(ServerLevel level) {
