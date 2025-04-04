@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
+import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
 
 import java.util.*;
@@ -42,6 +43,28 @@ public class SpawnRandomBlock {
         }
         if (Config.Server.SPAWN_ITEM_MODE.get() != Config.Server.SpawnItemMode.OFF) {
             checkAndSpawnItem(serverLevel);
+        }
+    }
+
+    @SubscribeEvent
+    private static void onLevelUnload(LevelEvent.Unload event) {
+        if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
+
+        if (lastPlacedBlock != null && serverLevel.getBlockState(lastPlacedBlock.pos).getBlock() == lastPlacedBlock.block) {
+            serverLevel.setBlock(lastPlacedBlock.pos, Blocks.AIR.defaultBlockState(), 3);
+            lastPlacedBlock = null;
+        }
+
+        for (PlacedBlock placed : placedBlocks.values()) {
+            if (serverLevel.getBlockState(placed.pos).getBlock() == placed.block) {
+                serverLevel.setBlock(placed.pos, Blocks.AIR.defaultBlockState(), 3);
+            }
+        }
+        placedBlocks.clear();
+
+        if (lastItemEntity != null && lastItemEntity.isAlive()) {
+            lastItemEntity.kill();
+            lastItemEntity = null;
         }
     }
 
@@ -187,7 +210,7 @@ public class SpawnRandomBlock {
                 .filter(item -> !(item instanceof ArmorItem || item instanceof ElytraItem ||
                         item instanceof ShieldItem || item instanceof TieredItem ||
                         item instanceof BowItem || item instanceof CrossbowItem ||
-                        item instanceof TridentItem || item instanceof FishingRodItem ||
+                        item instanceof FishingRodItem ||
                         item instanceof ProjectileItem || item instanceof BlockItem))
                 .toList();
     }
@@ -213,15 +236,7 @@ public class SpawnRandomBlock {
         }
     }
 
-    private static final class PlacedBlock {
-        final BlockPos pos;
-        final Block block;
-
-        PlacedBlock(BlockPos pos, Block block) {
-            this.pos = pos;
-            this.block = block;
-        }
-    }
+    private record PlacedBlock(BlockPos pos, Block block) {}
 
     public static long getLastBlockSpawnTime() {
         return lastBlockSpawnTime;
