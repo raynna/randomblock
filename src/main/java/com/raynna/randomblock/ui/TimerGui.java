@@ -15,6 +15,7 @@ public class TimerGui {
 
     public static long gameTime = 0L;  // Store the game time from the server
     public static long lastBlockSpawn = 0L;  // Store the game time from the server
+    public static long lastItemSpawn = 0L;  // Store the game time from the server
 
     public static void setTime(long newGameTime) {
         gameTime = newGameTime;
@@ -24,20 +25,32 @@ public class TimerGui {
         lastBlockSpawn = newLastBlockSpawn;
     }
 
+    public static void setLastItemSpawn(long newLastItemSpawn) {
+        lastItemSpawn = newLastItemSpawn;
+    }
+
     public static void show(GuiGraphics graphics) {
         Minecraft mc = Minecraft.getInstance();
         if (mc.player == null || mc.level == null || mc.options.hideGui) return;
         if (Config.Client.SHOW_GUI.get() == Config.Client.GuiMode.HIDE) return;
 
         long currentTime = gameTime;
-        long interval = Config.Server.SPAWN_BLOCK_TIMER.get() * 20L;
-        long timeSinceLastBlock = lastBlockSpawn;
 
-       long elapsed = currentTime - timeSinceLastBlock;
-       long remainingTicks = Math.max(0, interval - elapsed);
-       long remainingSeconds = (remainingTicks + 19) / 20;
-        String blockText = "§6Next Block Spawn: §f" + remainingSeconds + "s";
-        String itemText = "§aNext Item Spawn: §f" + remainingSeconds + "s";
+        long blockInterval = Config.Server.SPAWN_BLOCK_TIMER.get() * 20L;
+        long itemInterval = Config.Server.SPAWN_ITEM_TIMER.get() * 20L;
+
+        long timeSinceLastBlock = lastBlockSpawn;
+        long timeSinceLastItem = lastItemSpawn;
+
+        long blockElapsed = currentTime - timeSinceLastBlock;
+        long blockRemainingTicks = Math.max(0, blockInterval - blockElapsed);
+        long blockRemainingSeconds = (blockRemainingTicks + 19) / 20;
+        String blockText = "§6Next Block Spawn: §f" + blockRemainingSeconds + "s";
+
+        long itemElapsed = currentTime - timeSinceLastItem;
+        long itemRemainingTicks = Math.max(0, itemInterval - itemElapsed);
+        long itemRemainingSeconds = (itemRemainingTicks + 19) / 20;
+        String itemText = "§aNext Item Spawn: §f" + itemRemainingSeconds + "s";
 
 
         int blockTextWidth = mc.font.width(Component.literal(blockText));

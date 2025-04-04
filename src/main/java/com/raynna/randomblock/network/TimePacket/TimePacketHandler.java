@@ -26,6 +26,7 @@ public class TimePacketHandler implements IPayloadHandler<TimePacket> {
             if (player == null) return;
             TimerGui.setTime(packet.gameTime());
             TimerGui.setLastBlockSpawn(packet.lastBlockSpawn());
+            TimerGui.setLastItemSpawn(packet.lastItemSpawn());
         });
     }
 }

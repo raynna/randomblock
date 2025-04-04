@@ -42,7 +42,7 @@ public class SpawnRandomBlock {
         long currentGameTime = serverLevel.getGameTime();
         for (ServerPlayer player : serverLevel.players()) {
             if (player == null) continue;
-            TimePacketSender.send(player, currentGameTime, getLastBlockSpawnTime());
+            TimePacketSender.send(player, currentGameTime, getLastBlockSpawnTime(), getLastItemSpawnTime());
         }
 
         if (Config.Server.SPAWN_BLOCK_MODE.get() != Config.Server.SpawnBlockMode.OFF) {
