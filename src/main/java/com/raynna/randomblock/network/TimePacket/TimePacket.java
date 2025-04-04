@@ -6,7 +6,7 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
-public record TimePacket(long gameTime) implements CustomPacketPayload {
+public record TimePacket(long gameTime, long lastBlockSpawn) implements CustomPacketPayload {
 
     @Override
     public Type<? extends CustomPacketPayload> type() {
@@ -19,12 +19,14 @@ public record TimePacket(long gameTime) implements CustomPacketPayload {
         @Override
         public void encode(FriendlyByteBuf buf, TimePacket packet) {
             buf.writeLong(packet.gameTime());
+            buf.writeLong(packet.lastBlockSpawn());
         }
 
         @Override
         public TimePacket decode(FriendlyByteBuf buf) {
             long gameTime = buf.readLong();
-            return new TimePacket(gameTime);
+            long lastBlockSpawn = buf.readLong();
+            return new TimePacket(gameTime, lastBlockSpawn);
         }
     };
 }

@@ -42,7 +42,7 @@ public class SpawnRandomBlock {
         long currentGameTime = serverLevel.getGameTime();
         for (ServerPlayer player : serverLevel.players()) {
             if (player == null) continue;
-            TimePacketSender.send(player, currentGameTime);
+            TimePacketSender.send(player, currentGameTime, getLastBlockSpawnTime());
         }
 
         if (Config.Server.SPAWN_BLOCK_MODE.get() != Config.Server.SpawnBlockMode.OFF) {
@@ -79,28 +79,22 @@ public class SpawnRandomBlock {
         long currentTime = level.getGameTime();
         long interval = Config.Server.SPAWN_BLOCK_TIMER.get() * 20L;
 
-        if (lastBlockSpawnTime == 0L) {
-            lastBlockSpawnTime = currentTime;
+        if ((currentTime - getLastBlockSpawnTime()) < interval) {
             return;
         }
-        if ((currentTime - lastBlockSpawnTime) < interval) return;
 
         spawnNewBlock(level);
-        lastBlockSpawnTime = currentTime;
+        setLastBlockSpawnTime(currentTime);
     }
 
     private static void checkAndSpawnItem(ServerLevel level) {
         long currentTime = level.getGameTime();
         long interval = Config.Server.SPAWN_ITEM_TIMER.get() * 20L;
 
-        if (lastItemSpawnTime == 0L) {
-            lastItemSpawnTime = currentTime;
-            return;
-        }
-        if ((currentTime - lastItemSpawnTime) < interval) return;
+        if ((currentTime - getLastItemSpawnTime()) < interval) return;
 
         spawnNewItem(level);
-        lastItemSpawnTime = currentTime;
+        setLastItemSpawnTime(currentTime);
     }
 
     private static void spawnNewBlock(ServerLevel level) {
@@ -236,6 +230,14 @@ public class SpawnRandomBlock {
 
     public static long getLastItemSpawnTime() {
         return lastItemSpawnTime;
+    }
+
+    public static void setLastBlockSpawnTime(long currentTime) {
+        lastBlockSpawnTime = currentTime;
+    }
+
+    public static void setLastItemSpawnTime(long currentTime) {
+        lastItemSpawnTime = currentTime;
     }
 
     public static void register() {

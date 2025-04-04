@@ -25,6 +25,7 @@ public class TimePacketHandler implements IPayloadHandler<TimePacket> {
             LocalPlayer player = Minecraft.getInstance().player;
             if (player == null) return;
             TimerGui.setTime(packet.gameTime());
+            TimerGui.setLastBlockSpawn(packet.lastBlockSpawn());
         });
     }
 }

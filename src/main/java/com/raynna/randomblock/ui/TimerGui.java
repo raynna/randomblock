@@ -14,9 +14,14 @@ import net.neoforged.api.distmarker.OnlyIn;
 public class TimerGui {
 
     public static long gameTime = 0L;  // Store the game time from the server
+    public static long lastBlockSpawn = 0L;  // Store the game time from the server
 
     public static void setTime(long newGameTime) {
         gameTime = newGameTime;
+    }
+
+    public static void setLastBlockSpawn(long newLastBlockSpawn) {
+        lastBlockSpawn = newLastBlockSpawn;
     }
 
     public static void show(GuiGraphics graphics) {
@@ -25,26 +30,22 @@ public class TimerGui {
         if (Config.Client.SHOW_GUI.get() == Config.Client.GuiMode.HIDE) return;
 
         long currentTime = gameTime;
+        long interval = Config.Server.SPAWN_BLOCK_TIMER.get() * 20L;
+        long timeSinceLastBlock = lastBlockSpawn;
 
-        long blockInterval = Config.Server.SPAWN_BLOCK_TIMER.get() * 20L;
-        long timeSinceLastBlock = currentTime - SpawnRandomBlock.getLastBlockSpawnTime();
-        long blockRemaining = Mth.clamp(blockInterval - timeSinceLastBlock, 0, blockInterval) / 20;
-        System.out.println("blockRemaining: " + blockRemaining + ", timeSinceLastBlock: " + timeSinceLastBlock + ", blockInterval: " + blockInterval);
-
-        long itemInterval = Config.Server.SPAWN_ITEM_TIMER.get() * 20L;
-        long timeSinceLastItem = currentTime - SpawnRandomBlock.getLastItemSpawnTime();
-        long itemRemaining = Mth.clamp(itemInterval - timeSinceLastItem, 0, itemInterval) / 20;
-
-        String blockText = "§6Next Block Spawn: §f" + blockRemaining + "s";
-        String itemText = "§aNext Item Spawn: §f" + itemRemaining + "s";
+       long elapsed = currentTime - timeSinceLastBlock;
+       long remainingTicks = Math.max(0, interval - elapsed);
+       long remainingSeconds = (remainingTicks + 19) / 20;
+        String blockText = "§6Next Block Spawn: §f" + remainingSeconds + "s";
+        String itemText = "§aNext Item Spawn: §f" + remainingSeconds + "s";
 
 
-        int blockTextWidth = mc.font.width(Component.literal(blockText));  // Get the width of the block spawn text
-        int itemTextWidth = mc.font.width(Component.literal(itemText));    // Get the width of the item spawn text
+        int blockTextWidth = mc.font.width(Component.literal(blockText));
+        int itemTextWidth = mc.font.width(Component.literal(itemText));
 
 
-        int overlayWidth = Math.max(blockTextWidth, itemTextWidth) + 20;  // Add some padding
-        int overlayHeight = 30 + 10;  // Height for both lines of text
+        int overlayWidth = Math.max(blockTextWidth, itemTextWidth) + 20;
+        int overlayHeight = 30 + 10;
 
         int[] pos = GuiUtils.getPosition(
                 Config.Client.GUI_POSITION.get(),
