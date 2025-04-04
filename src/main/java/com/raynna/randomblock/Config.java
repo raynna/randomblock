@@ -60,6 +60,22 @@ public class Config {
         public static ModConfigSpec.EnumValue<Client.GuiMode> SHOW_GUI;
         public enum GuiMode { SHOW, HIDE }
 
+        public enum GuiPosition {
+            TOP_LEFT,
+            TOP_CENTER,
+            TOP_RIGHT,
+            CENTER_LEFT,
+            CENTER,
+            CENTER_RIGHT,
+            BOTTOM_LEFT,
+            BOTTOM_CENTER,
+            BOTTOM_RIGHT
+        }
+
+        public static ModConfigSpec.EnumValue<GuiPosition> GUI_POSITION;
+        public static final ModConfigSpec.IntValue X_PADDING;
+        public static final ModConfigSpec.IntValue Y_PADDING;
+
         static {
             ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
             CLIENT_CONFIG_VERSION = builder.translation("Client Config Version: ").comment("DO NOT CHANGE. Used for tracking config updates.").defineInRange("config_version", CLIENT_VERSION, 1, Integer.MAX_VALUE);
@@ -67,6 +83,13 @@ public class Config {
                     .comment("Determine if you want to see timers for next block and item spawns, Valid values are: SHOW, HIDE")
                     .comment("Default: SHOW")
                     .defineEnum("show_gui", Client.GuiMode.SHOW);
+            GUI_POSITION = builder.translation("Overlay Position: ")
+                    .comment("Where should the timer UI appear on the screen?")
+                    .comment("Options: TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT, CENTER")
+                    .defineEnum("gui_position", GuiPosition.BOTTOM_CENTER);
+            X_PADDING = builder.translation("Overlay X Adjustments: ").comment("Fine adjust the X position for the overlay").comment("Default: 10").defineInRange("x_adjustment", 10, 1, Integer.MAX_VALUE);
+            Y_PADDING = builder.translation("Overlay Y Adjustments: ").comment("Fine adjust the Y position for the overlay").comment("Default: 10").defineInRange("y_adjustment", 10, 1, Integer.MAX_VALUE);
+
             SPEC = builder.build();
         }
     }
