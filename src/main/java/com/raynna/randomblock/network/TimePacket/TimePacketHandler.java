@@ -15,7 +15,7 @@ public class TimePacketHandler implements IPayloadHandler<TimePacket> {
     @Override
     public void handle(TimePacket packet, IPayloadContext context) {
         if (context.flow() == PacketFlow.CLIENTBOUND) {
-           handleClient(packet);
+           handleClient(packet);//test
         }
     }
 
