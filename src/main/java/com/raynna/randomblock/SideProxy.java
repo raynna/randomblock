@@ -1,5 +1,6 @@
 package com.raynna.randomblock;
 
+import com.raynna.randomblock.commands.Commands;
 import com.raynna.randomblock.events.RenderEvent;
 import com.raynna.randomblock.events.SpawnRandomBlock;
 import net.minecraft.client.Minecraft;
@@ -29,6 +30,7 @@ class SideProxy implements IProxy {
         modEventBus.addListener(SideProxy::commonSetup);
         NeoForge.EVENT_BUS.addListener(SideProxy::serverStarted);
         NeoForge.EVENT_BUS.addListener(SideProxy::serverStopping);
+        NeoForge.EVENT_BUS.addListener(Commands::registerAll);
         SpawnRandomBlock.register();
     }
 

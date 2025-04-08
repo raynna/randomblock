@@ -1,5 +1,6 @@
 package com.raynna.randomblock;
 
+import net.minecraft.core.BlockPos;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.config.ModConfig;
@@ -10,6 +11,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.List;
 
 import static com.raynna.randomblock.RandomBlock.MOD_ID;
 
@@ -33,9 +35,15 @@ public class Config {
         public static ModConfigSpec.EnumValue<SpawnBlockMode> SPAWN_BLOCK_MODE;
         public enum SpawnBlockMode { ALL_PLAYERS, ONE_IN_WORLD, OFF }
 
+        public static ModConfigSpec.ConfigValue<List<? extends Integer>> SPAWN;
+
         static {
             ModConfigSpec.Builder builder = new ModConfigSpec.Builder();
             SERVER_CONFIG_VERSION = builder.translation("Server Config Version: ").comment("DO NOT CHANGE. Used for tracking config updates.").defineInRange("config_version", SERVER_VERSION, 1, Integer.MAX_VALUE);
+            SPAWN = builder.translation("Spawn Coordinates: ")
+                    .comment("Enter your spawn coordinates for your server as a list: [x, y, z]")
+                    .define("spawn", List.of(0, 68, 0), val -> val instanceof Integer);
+
             SPAWN_BLOCK_TIMER = builder.translation("Blocks/Second: ").comment("How frequent should new block spawn? In Seconds").comment("Default: 60").defineInRange("spawn_block_timer", 60, 1, Integer.MAX_VALUE);
             SPAWN_ITEM_TIMER = builder.translation("Items/Second: ").comment("How frequent should new item spawn? In Seconds").comment("Default: 600").defineInRange("spawn_item_timer", 600, 1, Integer.MAX_VALUE);
 
@@ -47,6 +55,16 @@ public class Config {
                     .comment("Determine if items should spawn for all players, or one per world, or shouldn't be spawned at all, Valid values are: ALL_PLAYERS, ONE_IN_WORLD, OFF")
                     .defineEnum("spawn_item_mode", SpawnItemMode.ALL_PLAYERS);
             SPEC = builder.build();
+        }
+
+        public static BlockPos getSpawnPos() {
+            List<? extends Integer> list = SPAWN.get();
+            if (list.size() != 3) return new BlockPos(0, 68, 0); // fallback
+            return new BlockPos(list.get(0), list.get(1), list.get(2));
+        }
+
+        public static void setSpawnPos(BlockPos pos) {
+            SPAWN.set(List.of(pos.getX(), pos.getY(), pos.getZ()));
         }
     }
 
@@ -85,7 +103,7 @@ public class Config {
                     .defineEnum("show_gui", Client.GuiMode.SHOW);
             GUI_POSITION = builder.translation("Timer Overlay Position: ")
                     .comment("Location for timer overlay")
-                    .defineEnum("gui_position", GuiPosition.BOTTOM_CENTER);
+                    .defineEnum("gui_position", GuiPosition.CENTER_RIGHT);
             X_PADDING = builder.translation("Overlay X Adjustments: ").comment("Fine adjust the X position for the overlay").defineInRange("x_adjustment", 10, Integer.MIN_VALUE, Integer.MAX_VALUE);
             Y_PADDING = builder.translation("Overlay Y Adjustments: ").comment("Fine adjust the Y position for the overlay").defineInRange("y_adjustment", 10, Integer.MIN_VALUE, Integer.MAX_VALUE);
 

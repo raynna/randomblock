@@ -10,6 +10,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -19,13 +20,14 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.level.LevelEvent;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 
 import java.util.*;
 
 public class SpawnRandomBlock {
 
     private static final Random RANDOM = new Random();
-    private static final BlockPos DEFAULT_POS = new BlockPos(6, 67, 3);
+    private static BlockPos DEFAULT_POS = new BlockPos(6, 67, 3);
     private static final int SPAWN_RADIUS = 3;
 
     private static long lastBlockSpawnTime = 0;
@@ -34,11 +36,22 @@ public class SpawnRandomBlock {
     private static PlacedBlock lastPlacedBlock = null;
     private static final Map<ServerPlayer, PlacedBlock> placedBlocks = new HashMap<>();
 
+    private static void setDefaultPos(BlockPos pos) {
+        DEFAULT_POS = pos;
+    }
+
     @SubscribeEvent
     private static void onLevelTick(LevelTickEvent.Post event) {
         if (!(event.getLevel() instanceof ServerLevel serverLevel)) return;
         if (serverLevel.players().isEmpty()) return;
-
+        if (!Objects.equals(DEFAULT_POS, Config.Server.getSpawnPos())) {
+            BlockPos newPos = Config.Server.getSpawnPos();
+            setDefaultPos(newPos);
+            for (ServerPlayer player : serverLevel.players()) {
+                if (player == null) continue;
+                player.sendSystemMessage(Component.literal("Default Spawn has changed to: " + newPos.toShortString()));
+            }
+        }
         long currentGameTime = serverLevel.getGameTime();
         for (ServerPlayer player : serverLevel.players()) {
             if (player == null) continue;
