@@ -1,4 +1,4 @@
-package com.raynna.randomblock;
+package com.raynna.blockroulette;
 
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.loading.FMLEnvironment;
@@ -16,20 +16,20 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
-@Mod(RandomBlock.MOD_ID)
-public class RandomBlock
+@Mod(BlockRoulette.MOD_ID)
+public class BlockRoulette
 {
-    public static final String MOD_ID = "randomblock";
-    public static final String MOD_NAME = "Raynna's Random Block";
+    public static final String MOD_ID = "blockroulette";
+    public static final String MOD_NAME = "Raynna's Block Roulette";
 
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public static IProxy PROXY;
-    public static RandomBlock INSTANCE;
+    public static BlockRoulette INSTANCE;
 
 
 
-    public RandomBlock(IEventBus modEventBus, ModContainer modContainer)
+    public BlockRoulette(IEventBus modEventBus, ModContainer modContainer)
     {
         INSTANCE = this;
         PROXY = FMLEnvironment.dist == Dist.CLIENT
@@ -44,7 +44,7 @@ public class RandomBlock
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event)
     {
-        LOGGER.info("[RaynnaRandomBlock] Mod loaded on dedicated server]");
+        LOGGER.info(MOD_NAME + " Mod loaded on dedicated server]");
     }
 
     @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
@@ -53,7 +53,7 @@ public class RandomBlock
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-            LOGGER.info("[RaynnaRandomBlock] Mod loaded on client]");
+            LOGGER.info(MOD_NAME + " Mod loaded on client]");
         }
     }
 }

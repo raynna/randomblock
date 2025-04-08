@@ -1,7 +1,7 @@
-package com.raynna.randomblock.events;
+package com.raynna.blockroulette.events;
 
-import com.raynna.randomblock.RandomBlock;
-import com.raynna.randomblock.ui.TimerGui;
+import com.raynna.blockroulette.BlockRoulette;
+import com.raynna.blockroulette.ui.TimerGui;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -10,7 +10,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.RenderGuiEvent;
 import net.neoforged.neoforge.common.NeoForge;
 
-@EventBusSubscriber(modid = RandomBlock.MOD_ID, value = Dist.CLIENT)
+@EventBusSubscriber(modid = BlockRoulette.MOD_ID, value = Dist.CLIENT)
 public class RenderEvent {
 
     @SubscribeEvent(priority = EventPriority.HIGHEST)

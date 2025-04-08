@@ -1,12 +1,9 @@
-package com.raynna.randomblock.ui;
+package com.raynna.blockroulette.ui;
 
-import com.raynna.randomblock.Config;
-import com.raynna.randomblock.events.SpawnRandomBlock;
+import com.raynna.blockroulette.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.util.Mth;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 

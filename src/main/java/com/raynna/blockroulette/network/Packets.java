@@ -1,7 +1,7 @@
-package com.raynna.randomblock.network;
+package com.raynna.blockroulette.network;
 
-import com.raynna.randomblock.network.TimePacket.TimePacket;
-import com.raynna.randomblock.network.TimePacket.TimePacketHandler;
+import com.raynna.blockroulette.network.TimePacket.TimePacket;
+import com.raynna.blockroulette.network.TimePacket.TimePacketHandler;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;

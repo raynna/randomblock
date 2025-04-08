@@ -1,8 +1,8 @@
-package com.raynna.randomblock;
+package com.raynna.blockroulette;
 
-import com.raynna.randomblock.commands.Commands;
-import com.raynna.randomblock.events.RenderEvent;
-import com.raynna.randomblock.events.SpawnRandomBlock;
+import com.raynna.blockroulette.commands.Commands;
+import com.raynna.blockroulette.events.RenderEvent;
+import com.raynna.blockroulette.events.SpawnRandomBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;

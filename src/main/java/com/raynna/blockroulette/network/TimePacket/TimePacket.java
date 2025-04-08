@@ -1,4 +1,4 @@
-package com.raynna.randomblock.network.TimePacket;
+package com.raynna.blockroulette.network.TimePacket;
 
 
 import net.minecraft.network.FriendlyByteBuf;

@@ -1,9 +1,8 @@
-package com.raynna.randomblock.network.TimePacket;
+package com.raynna.blockroulette.network.TimePacket;
 
-import com.raynna.randomblock.ui.TimerGui;
+import com.raynna.blockroulette.ui.TimerGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.PacketFlow;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;

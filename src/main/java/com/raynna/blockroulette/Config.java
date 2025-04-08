@@ -1,4 +1,4 @@
-package com.raynna.randomblock;
+package com.raynna.blockroulette;
 
 import net.minecraft.core.BlockPos;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -13,7 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
-import static com.raynna.randomblock.RandomBlock.MOD_ID;
+import static com.raynna.blockroulette.BlockRoulette.MOD_ID;
 
 @EventBusSubscriber(modid = MOD_ID, bus = EventBusSubscriber.Bus.MOD)
 public class Config {

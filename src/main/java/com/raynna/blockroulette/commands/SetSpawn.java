@@ -1,9 +1,9 @@
-package com.raynna.randomblock.commands;
+package com.raynna.blockroulette.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import com.raynna.randomblock.Config;
+import com.raynna.blockroulette.Config;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.core.BlockPos;

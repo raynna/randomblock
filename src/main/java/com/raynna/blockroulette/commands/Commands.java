@@ -1,4 +1,4 @@
-package com.raynna.randomblock.commands;
+package com.raynna.blockroulette.commands;
 
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
