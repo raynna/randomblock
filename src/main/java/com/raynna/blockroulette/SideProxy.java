@@ -1,5 +1,7 @@
 package com.raynna.blockroulette;
 
+import com.iafenvoy.jupiter.network.ClientConfigNetwork;
+import com.iafenvoy.jupiter.network.ServerConfigNetwork;
 import com.raynna.blockroulette.commands.Commands;
 import com.raynna.blockroulette.events.RenderEvent;
 import com.raynna.blockroulette.events.SpawnRandomBlock;
@@ -78,6 +80,7 @@ class SideProxy implements IProxy {
             super(modEventBus);
             container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
             RenderEvent.register();
+            ClientConfigNetwork.init();
         }
 
         @Nullable
@@ -109,6 +112,7 @@ class SideProxy implements IProxy {
         Server(IEventBus modEventBus, ModContainer container) {
             super(modEventBus);
             modEventBus.addListener(this::serverSetup);
+            ServerConfigNetwork.init();
         }
 
         private void serverSetup(FMLDedicatedServerSetupEvent event) {
