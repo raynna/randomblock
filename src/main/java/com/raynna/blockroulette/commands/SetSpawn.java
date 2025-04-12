@@ -21,7 +21,7 @@ public class SetSpawn {
 
     private static int run(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
         ServerPlayer player = context.getSource().getPlayerOrException();
-        BlockPos pos = player.getOnPos();
+        BlockPos pos = player.getOnPos().above();
         Config.Server.setSpawnPos(pos);
         player.sendSystemMessage(Component.literal("You have set your servers spawn location to: " + pos.getX() + ", " + pos.getY() + ", " + pos.getZ()));
         return 1;

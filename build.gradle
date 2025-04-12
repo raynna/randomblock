@@ -5,14 +5,6 @@ plugins {
     id 'net.neoforged.moddev' version '2.0.78'
 }
 
-println "GITHUB_TOKEN = ${System.getenv("GITHUB_TOKEN")}"
-println "GITHUB_TOKEN = ${property('gpr.token')}"
-
-def gpr_creds = {
-    username = property('gpr.username')
-    password = property('gpr.token')
-}
-
 tasks.named('wrapper', Wrapper).configure {
     distributionType = Wrapper.DistributionType.BIN
 }
@@ -21,6 +13,10 @@ version = mod_version
 group = mod_group_id
 
 repositories {
+    maven {
+        name = "Modrinth"
+        url = "https://api.modrinth.com/maven"
+    }
     mavenCentral()
     mavenLocal()
 }
@@ -88,6 +84,7 @@ configurations {
 }
 
 dependencies {
+    implementation("maven.modrinth:jupiter:6FVn8sRM")
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {
