@@ -1,14 +1,7 @@
 package com.raynna.blockroulette;
 
-import com.iafenvoy.jupiter.ConfigManager;
-import com.iafenvoy.jupiter.ServerConfigManager;
-import com.iafenvoy.jupiter.render.screen.ConfigSelectScreen;
-import com.raynna.blockroulette.config.RaynnaServerConfig;
-import net.minecraft.network.chat.Component;
-import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.loading.FMLEnvironment;
-import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -43,9 +36,6 @@ public class BlockRoulette
                 ? new SideProxy.Client(modEventBus, modContainer)
                 : new SideProxy.Server(modEventBus, modContainer);
 
-        ConfigManager.getInstance().registerConfigHandler(RaynnaServerConfig.INSTANCE);
-        ServerConfigManager.registerServerConfig(RaynnaServerConfig.INSTANCE, ServerConfigManager.PermissionChecker.IS_OPERATOR);
-
         modContainer.registerConfig(ModConfig.Type.COMMON, Config.Server.SPEC);
         modContainer.registerConfig(ModConfig.Type.CLIENT, Config.Client.SPEC);
         NeoForge.EVENT_BUS.register(this);
@@ -65,16 +55,6 @@ public class BlockRoulette
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             LOGGER.info(MOD_NAME + " Mod loaded on client]");
-            event.enqueueWork(() -> {
-                ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () ->
-                        (mc, parent) -> new ConfigSelectScreen<>(
-                                Component.translatable("config.raynna.common.title"),
-                                parent,
-                                RaynnaServerConfig.INSTANCE,
-                                null
-                        )
-                );
-            });
         }
     }
 }

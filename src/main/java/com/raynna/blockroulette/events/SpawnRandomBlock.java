@@ -227,7 +227,14 @@ public class SpawnRandomBlock {
         }
     }
 
-    private record PlacedBlock(BlockPos pos, Block block) {
+    public record PlacedBlock(BlockPos pos, Block block) { }
+
+    public static Map<ServerPlayer, PlacedBlock> getPlacedBlocks() {
+        return placedBlocks;
+    }
+
+    public static PlacedBlock getLastPlacedBlock() {
+        return lastPlacedBlock;
     }
 
     public static long getLastBlockSpawnTime() {

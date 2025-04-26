@@ -1,8 +1,8 @@
 package com.raynna.blockroulette;
 
-import com.iafenvoy.jupiter.network.ClientConfigNetwork;
 import com.iafenvoy.jupiter.network.ServerConfigNetwork;
 import com.raynna.blockroulette.commands.Commands;
+import com.raynna.blockroulette.events.LoginEvents;
 import com.raynna.blockroulette.events.RenderEvent;
 import com.raynna.blockroulette.events.SpawnRandomBlock;
 import net.minecraft.client.Minecraft;
@@ -80,7 +80,7 @@ class SideProxy implements IProxy {
             super(modEventBus);
             container.registerExtensionPoint(IConfigScreenFactory.class, ConfigurationScreen::new);
             RenderEvent.register();
-            ClientConfigNetwork.init();
+            LoginEvents.register();
         }
 
         @Nullable
